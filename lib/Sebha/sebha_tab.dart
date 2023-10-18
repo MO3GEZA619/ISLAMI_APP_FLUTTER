@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:islami/Provider/app_config_provider.dart';
+import 'package:provider/provider.dart';
+
 
 class SebhaTap extends StatefulWidget {
   @override
@@ -8,16 +11,24 @@ class SebhaTap extends StatefulWidget {
 class _SebhaTapState extends State<SebhaTap> {
   double turns = 0;
   int numberOfTasbeh = 0;
-  List<String> tasbeh = ['سُبْحَانَ اللهِ', 'الْحَمْدُ لِلَّهِ', 'لَا إِلَهَ إِلَّا اللهُ', 'اللهُ أَكْبَرُ'
+  List<String> tasbeh = [
+    'سُبْحَانَ اللهِ',
+    'الْحَمْدُ لِلَّهِ',
+    'لَا إِلَهَ إِلَّا اللهُ',
+    'اللهُ أَكْبَرُ'
   ];
   int index = 0;
 
   @override
   Widget build(BuildContext context) {
+    var provider =Provider.of<AppConfigProvider>(context);
+
     return Column(
       children: [
         Stack(children: [
-          Center(child: Image.asset('images/head_sebha_logo.png')),
+          Center(child:provider.isDarkMode()
+              ? Image.asset('images/head_sebha_dark.png'):
+          Image.asset('images/head_sebha_logo.png')),
           Container(
             margin: EdgeInsets.symmetric(
                 vertical: MediaQuery.of(context).size.height * 0.06,
@@ -35,7 +46,9 @@ class _SebhaTapState extends State<SebhaTap> {
               child: AnimatedRotation(
                   turns: turns,
                   duration: Duration(milliseconds: 250),
-                  child: Image.asset('images/body_sebha_logo.png')),
+                  child: provider.isDarkMode()
+                      ? Image.asset('images/body_sebha_dark.png'):
+                  Image.asset('images/body_sebha_logo.png')),
             ),
           ),
         ]),
@@ -45,7 +58,7 @@ class _SebhaTapState extends State<SebhaTap> {
               horizontal: MediaQuery.of(context).size.width * 0.0),
           child: Text(
             'عدد التسبيحات',
-            style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         Container(
@@ -58,19 +71,22 @@ class _SebhaTapState extends State<SebhaTap> {
               borderRadius: BorderRadius.all(Radius.circular(25)),
               color: Theme.of(context).primaryColor),
           child: Text(
-            '$numberOfTasbeh',style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold),
+            '$numberOfTasbeh',
+            style: TextStyle(
+                color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
           ),
         ),
         Container(
           alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: 70,vertical: 20),
+          margin: EdgeInsets.symmetric(horizontal: 70, vertical: 20),
           height: 70,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(25)),
               color: Theme.of(context).primaryColor),
           child: Text(
             '${tasbeh[index]}',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 35),
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 35),
           ),
         )
       ],
